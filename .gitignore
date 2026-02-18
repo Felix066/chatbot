@@ -1,0 +1,5 @@
+config.js
+.gemini/
+brain/
+*.log
+node_modules/

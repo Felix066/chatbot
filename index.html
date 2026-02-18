@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Admission Assistant | Professional AI Guidance</title>
+    <meta name="description"
+        content="Get professional AI assistance for engineering college admissions and B.Tech specializations.">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <h1>ENGG.ADMIT</h1>
+            </div>
+            <nav style="margin-top: 3rem; flex: 1;">
+                <div class="nav-group">
+                    <p
+                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+                        Navigation</p>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-chat"
+                                style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">Chat
+                                Assistant</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-dashboard"
+                                style="color: var(--text-muted); text-decoration: none;">Available Courses</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-scholarships"
+                                style="color: var(--text-muted); text-decoration: none;">Scholarships</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-deadlines"
+                                style="color: var(--text-muted); text-decoration: none;">Deadlines</a></li>
+                    </ul>
+                    <div class="nav-group" style="margin-top: 2rem;">
+                        <p
+                            style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+                            Demo Scenarios</p>
+                    </div>
+            </nav>
+
+            <div class="sidebar-section">
+                <h3>Demo Scenarios</h3>
+                <ul class="scenario-list">
+                    <li onclick="userInput.value='Tell me about B.Tech'; handleSend()">"Tell me about B.Tech"</li>
+                    <li onclick="userInput.value='What about Placements?'; handleSend()">"What about Placements?"</li>
+                    <li onclick="userInput.value='Is there any Ragging?'; handleSend()">"Is there any Ragging?"</li>
+                    <li onclick="userInput.value='Tell me the Fees'; handleSend()">"Tell me the Fees"</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="helpdesk-btn" onclick="assistant.showDetails('support')">Contact Helpdesk</button>
+                <div class="system-tag">2026 Admissions Phase</div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- News Ticker -->
+            <div class="news-ticker">
+                <div class="ticker-content" id="ticker-content">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <header class="header">
+                <div class="status-indicator">
+                    <span class="pulse"
+                        style="display: inline-block; width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%; margin-right: 0.5rem;box-shadow: 0 0 10px var(--accent-primary);"></span>
+                    <span>System Status: <strong style="color: var(--accent-primary);">Online</strong></span>
+                </div>
+                <div class="user-greeting">
+                    <span>Welcome back, <strong id="display-name"
+                            style="color: var(--accent-secondary);">Student</strong></span>
+                </div>
+            </header>
+
+            <!-- Chat View -->
+            <div id="chat-view" class="view-container">
+                <div class="chat-window" id="chat-window">
+                    <!-- Welcome Message -->
+                    <div class="message ai">
+                        Hello! I am your <strong>Professional AI College Admission Support Assistant</strong>.
+                        🎓<br><br>
+                        I can help you with course information, eligibility, fee structures, and personalized
+                        recommendations.<br><br>
+                        To get started, could you please tell me about your <strong>12th stream</strong>, your
+                        <strong>percentage</strong>, and your <strong>career goals</strong>?
+                    </div>
+                </div>
+                <!-- Input Area pinned to Chat View -->
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+                        <button class="send-btn" id="send-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view-container view-hidden">
+                <div class="dashboard-grid" id="dashboard">
+                    <!-- Admission Journey Card -->
+                    <div class="card" style="grid-column: span 2;">
+                        <h3>Admission Journey</h3>
+                        <div class="timeline" id="admission-timeline">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                    <!-- Campus Map Card -->
+                    <div class="card">
+                        <h3>Campus Locator</h3>
+                        <div class="map-container" id="campus-map">
+                            <div class="map-marker" style="top: 20%; left: 30%;" data-label="Admin"></div>
+                            <div class="map-marker" style="top: 60%; left: 70%;" data-label="Tech Lab"></div>
+                            <div class="map-marker" style="top: 40%; left: 50%;" data-label="Hostel"></div>
+                        </div>
+                    </div>
+                    <!-- Campus Facilities Card -->
+                    <div class="card">
+                        <h3>Facilities</h3>
+                        <p style="font-size: 0.85rem; line-height: 1.4;">
+                            • Multi-cuisine <strong>Canteen</strong><br>
+                            • 24/7 <strong>WiFi</strong> & <strong>Library</strong><br>
+                            • Smart <strong>Transport</strong> (GPS)
+                        </p>
+                    </div>
+                    <!-- Document Checklist Card -->
+                    <div class="card">
+                        <h3>Required Documents</h3>
+                        <div id="document-checklist">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Timeline & Dates</h3>
+                        <p id="deadline-info">Applications open March 1st.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application Modal -->
+    <div class="modal-overlay" id="app-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem; color: var(--accent-secondary);">Apply for Admission 2026</h2>
+            <form id="admission-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>B.Tech Specialization</label>
+                    <select id="spec-select" required>
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>12th Percentage (%)</label>
+                    <input type="number" step="0.1" placeholder="e.g. 85.5" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="send-btn" style="flex: 1;">Submit Application</button>
+                    <button type="button" class="send-btn" id="close-modal"
+                        style="background: var(--chat-bubble-ai); flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="data.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
