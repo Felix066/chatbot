@@ -22,16 +22,12 @@
                     <p
                         style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
                         Navigation</p>
-                    <ul style="list-style: none;">
-                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-chat"
-                                style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">Chat
-                                Assistant</a></li>
-                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-dashboard"
-                                style="color: var(--text-muted); text-decoration: none;">Available Courses</a></li>
-                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-scholarships"
-                                style="color: var(--text-muted); text-decoration: none;">Scholarships</a></li>
-                        <li style="margin-bottom: 1rem;"><a href="#" id="nav-deadlines"
-                                style="color: var(--text-muted); text-decoration: none;">Deadlines</a></li>
+                    <ul class="nav-links">
+                        <li><a href="#" id="nav-chat" class="nav-link active">Chat Assistant</a></li>
+                        <li><a href="#" id="nav-courses" class="nav-link">Available Courses</a></li>
+                        <li><a href="#" id="nav-scholarships" class="nav-link">Scholarships</a></li>
+                        <li><a href="#" id="nav-journey" class="nav-link">Admission & Training</a></li>
+                        <li><a href="#" id="nav-docs" class="nav-link">Required Documents</a></li>
                     </ul>
                     <div class="nav-group" style="margin-top: 2rem;">
                         <p
@@ -101,42 +97,47 @@
 
             <!-- Dashboard View -->
             <div id="dashboard-view" class="view-container view-hidden">
-                <div class="dashboard-grid" id="dashboard">
-                    <!-- Admission Journey Card -->
-                    <div class="card" style="grid-column: span 2;">
-                        <h3>Admission Journey</h3>
-                        <div class="timeline" id="admission-timeline">
-                            <!-- Populated via JS -->
+                <!-- Section: Available Courses -->
+                <div id="section-courses" class="dashboard-section">
+                    <h2 class="section-title">Available B.Tech Specializations</h2>
+                    <div id="course-grid" class="course-grid">
+                        <!-- Dynamic Course Cards -->
+                    </div>
+                </div>
+
+                <!-- Section: Scholarships -->
+                <div id="section-scholarships" class="dashboard-section view-hidden">
+                    <h2 class="section-title">Scholarships & Merit Awards</h2>
+                    <div id="scholarship-grid" class="scholarship-grid">
+                        <!-- Dynamic Scholarship Cards -->
+                    </div>
+                </div>
+
+                <!-- Section: Admission & Training -->
+                <div id="section-admission" class="dashboard-section view-hidden">
+                    <h2 class="section-title">Admission Process & Training</h2>
+                    <div class="admission-content">
+                        <div class="timeline-container">
+                            <div class="vertical-timeline" id="admission-timeline">
+                                <!-- Dynamic Timeline Steps -->
+                            </div>
+                        </div>
+                        <div class="training-info">
+                            <h3>Training & Placement Support</h3>
+                            <ul id="training-list" class="professional-list">
+                                <!-- Dynamic Training List -->
+                            </ul>
                         </div>
                     </div>
-                    <!-- Campus Map Card -->
-                    <div class="card">
-                        <h3>Campus Locator</h3>
-                        <div class="map-container" id="campus-map">
-                            <div class="map-marker" style="top: 20%; left: 30%;" data-label="Admin"></div>
-                            <div class="map-marker" style="top: 60%; left: 70%;" data-label="Tech Lab"></div>
-                            <div class="map-marker" style="top: 40%; left: 50%;" data-label="Hostel"></div>
+                </div>
+
+                <!-- Section: Required Documents -->
+                <div id="section-docs" class="dashboard-section view-hidden">
+                    <h2 class="section-title">Required Documents Checklist</h2>
+                    <div class="docs-container">
+                        <div id="document-checklist" class="professional-checklist">
+                            <!-- Dynamic Document Items -->
                         </div>
-                    </div>
-                    <!-- Campus Facilities Card -->
-                    <div class="card">
-                        <h3>Facilities</h3>
-                        <p style="font-size: 0.85rem; line-height: 1.4;">
-                            • Multi-cuisine <strong>Canteen</strong><br>
-                            • 24/7 <strong>WiFi</strong> & <strong>Library</strong><br>
-                            • Smart <strong>Transport</strong> (GPS)
-                        </p>
-                    </div>
-                    <!-- Document Checklist Card -->
-                    <div class="card">
-                        <h3>Required Documents</h3>
-                        <div id="document-checklist">
-                            <!-- Populated via JS -->
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Timeline & Dates</h3>
-                        <p id="deadline-info">Applications open March 1st.</p>
                     </div>
                 </div>
             </div>
@@ -174,7 +175,6 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script src="data.js"></script>
-    <script src="config.js"></script>
     <script src="app.js"></script>
 </body>
 
