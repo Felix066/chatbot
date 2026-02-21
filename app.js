@@ -108,42 +108,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const callGeminiAPI = async (prompt) => {
         const trimmedKey = CONFIG.GEMINI_API_KEY.trim();
-        const models = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-pro'];
-        let lastError = "";
+        const base = "https://generativelanguage.googleapis.com/v1beta";
 
-        for (const model of models) {
-            // Using v1 (stable) instead of v1beta
-            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${trimmedKey}`;
+        // 1. Try the most common model first
+        const tryModel = async (modelName) => {
+            const url = `${base}/models/${modelName}:generateContent?key=${trimmedKey}`;
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            return await resp.json();
+        };
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
-                    })
-                });
+        try {
+            // First attempt with Flash
+            let data = await tryModel('gemini-1.5-flash');
 
-                const data = await response.json();
+            // 2. If it fails, try to "Discover" what models THIS key can actually use
+            if (data.error && data.error.status === "NOT_FOUND") {
+                console.warn("Standard model not found. Discovering available models...");
+                const listUrl = `${base}/models?key=${trimmedKey}`;
+                const listResp = await fetch(listUrl);
+                const listData = await listResp.json();
 
-                if (data.error) {
-                    console.warn(`Model ${model} failed:`, data.error.message);
-                    lastError = data.error.message;
-                    continue; // Try next model
+                if (listData.models && listData.models.length > 0) {
+                    // Find the first model that supports "generateContent"
+                    const discoverable = listData.models.find(m => m.supportedGenerationMethods.includes("generateContent"));
+                    if (discoverable) {
+                        const modelName = discoverable.name.split('/').pop();
+                        console.log(`Discovered working model: ${modelName}`);
+                        data = await tryModel(modelName);
+                    }
                 }
-
-                if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
-                    console.log(`Connection successful with model: ${model}`);
-                    return data.candidates[0].content.parts[0].text;
-                }
-            } catch (error) {
-                lastError = error.message;
             }
-        }
 
-        return `<strong>Connection Issue:</strong> ${lastError}<br><br>` +
-            `1. Verify your key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-primary)">Google AI Studio</a>.<br>` +
-            `2. Check if the <strong>"Generative Language API"</strong> is enabled in your Google Cloud Console for Project ID: <code>${trimmedKey.substring(0, 5)}...</code>`;
+            if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
+                return data.candidates[0].content.parts[0].text;
+            }
+
+            if (data.error) throw new Error(data.error.message);
+            throw new Error("Unexpected API response structure.");
+
+        } catch (error) {
+            console.error('Gemini Discovery Error:', error);
+            return `<strong>Configuration Needed:</strong> ${error.message}<br><br>` +
+                `1. Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-primary)">Google AI Studio</a>.<br>` +
+                `2. Ensure you have **"Gemini 1.5 Flash"** available in your list of models.<br>` +
+                `3. If you just created the key, wait 60 seconds and refresh.`;
+        }
     };
 
     const appendMessage = (text, type, chips = []) => {
