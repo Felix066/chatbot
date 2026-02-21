@@ -108,42 +108,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const callGeminiAPI = async (prompt) => {
         const trimmedKey = CONFIG.GEMINI_API_KEY.trim();
-        // This is the most standard, stable endpoint for Gemini Flash
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${trimmedKey}`;
+        const models = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-pro'];
+        let lastError = "";
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
-                })
-            });
+        for (const model of models) {
+            // Using v1 (stable) instead of v1beta
+            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${trimmedKey}`;
 
-            const data = await response.json();
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
 
-            if (data.error) {
-                console.error("API Error Response:", data.error);
-                // If we get "NOT_FOUND", it's almost certainly the API setup, not the code.
-                if (data.error.status === "NOT_FOUND") {
-                    throw new Error("API Connection OK, but 'Generative Language API' is not enabled or model is unavailable for this key.");
+                const data = await response.json();
+
+                if (data.error) {
+                    console.warn(`Model ${model} failed:`, data.error.message);
+                    lastError = data.error.message;
+                    continue; // Try next model
                 }
-                throw new Error(data.error.message);
-            }
 
-            if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
-                return data.candidates[0].content.parts[0].text;
+                if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
+                    console.log(`Connection successful with model: ${model}`);
+                    return data.candidates[0].content.parts[0].text;
+                }
+            } catch (error) {
+                lastError = error.message;
             }
-            throw new Error("Empty response from AI");
-
-        } catch (error) {
-            console.error('Final Gemini API Error:', error);
-            return `<strong>Connection Issue:</strong> ${error.message}<br><br>` +
-                `1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-primary)">Google AI Studio</a>.<br>` +
-                `2. Create a NEW API key.<br>` +
-                `3. Replace the key in your <code>config.js</code> file.<br>` +
-                `4. Refresh this page.`;
         }
+
+        return `<strong>Connection Issue:</strong> ${lastError}<br><br>` +
+            `1. Verify your key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-primary)">Google AI Studio</a>.<br>` +
+            `2. Check if the <strong>"Generative Language API"</strong> is enabled in your Google Cloud Console for Project ID: <code>${trimmedKey.substring(0, 5)}...</code>`;
     };
 
     const appendMessage = (text, type, chips = []) => {
