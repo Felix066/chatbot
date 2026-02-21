@@ -236,11 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Gemini AI Fallback
         toggleTypingIndicator(true);
-        const aiResponse = await callGeminiAPI(`You are a professional B.Tech admission assistant for an engineering college in 2026. 
-            User says: "${text}". 
-            Provide a helpful, professional, and concise response. 
-            If they ask about admission, refer to the "Admission Journey" section. 
-            Keep it under 3 sentences unless detailed info is requested.`);
+        const aiResponse = await callGeminiAPI(`You are a strictly professional B.Tech admission assistant for an engineering college in 2026. 
+            RULES:
+            1. ONLY answer questions related to B.Tech admissions, engineering courses, scholarships, or college facilities.
+            2. If the user asks about anything else (like nursing, medicine, general science, or non-college topics), politely state that you only handle B.Tech engineering admissions.
+            3. Keep responses VERY short (max 2 sentences) and use bullet points if possible.
+            4. User says: "${text}".`);
         toggleTypingIndicator(false);
 
         appendMessage(aiResponse, 'ai', ["Available Courses", "Admission Journey"]);
