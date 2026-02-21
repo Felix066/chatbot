@@ -91,6 +91,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     };
 
+    const toggleTypingIndicator = (show) => {
+        const existing = document.getElementById('typing-indicator');
+        if (show) {
+            if (existing) return;
+            const indicator = document.createElement('div');
+            indicator.id = 'typing-indicator';
+            indicator.className = 'message ai typing';
+            indicator.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span>`;
+            if (chatWindow) chatWindow.appendChild(indicator);
+            if (chatWindow) chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+        } else {
+            if (existing) existing.remove();
+        }
+    };
+
+    const callGeminiAPI = async (prompt) => {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${CONFIG.GEMINI_API_KEY}`;
+        const body = {
+            contents: [{
+                parts: [{ text: prompt }]
+            }],
+            generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 500,
+            }
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                return data.candidates[0].content.parts[0].text;
+            }
+            throw new Error('Invalid response from API');
+        } catch (error) {
+            console.error('Gemini API Error:', error);
+            return "I'm having trouble connecting to my brain right now. 🧠 Please try again later or check the dashboard for info!";
+        }
+    };
+
     const appendMessage = (text, type, chips = []) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${type}`;
@@ -166,8 +210,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return appendMessage(bestFAQ.a, 'ai', ["Apply Now", "Check Fees"]);
         }
 
-        // Final Fallback
-        appendMessage("I'm not sure about that particular detail. 😅<br><br>Please check our dashboard sections for direct information.", 'ai', ["Available Courses", "Admission Journey"]);
+        // Gemini AI Fallback
+        toggleTypingIndicator(true);
+        const aiResponse = await callGeminiAPI(`You are a professional B.Tech admission assistant for an engineering college in 2026. 
+            User says: "${text}". 
+            Provide a helpful, professional, and concise response. 
+            If they ask about admission, refer to the "Admission Journey" section. 
+            Keep it under 3 sentences unless detailed info is requested.`);
+        toggleTypingIndicator(false);
+
+        appendMessage(aiResponse, 'ai', ["Available Courses", "Admission Journey"]);
     };
 
     const openApplication = () => {

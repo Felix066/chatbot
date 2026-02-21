@@ -763,17 +763,21 @@ button.send-btn:hover {
 }
 
 .message.ai.typing {
-    background: var(--glass-bg);
+    background: var(--chat-bubble-ai);
     border: 1px solid var(--glass-border);
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-style: italic;
-    color: var(--text-muted);
+    gap: 6px;
     width: fit-content;
+    padding: 0.75rem 1.25rem;
 }
 
 .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    display: inline-block;
     animation: dotPulse 1.5s infinite;
 }
 
