@@ -125,13 +125,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(body)
             });
             const data = await response.json();
-            if (data.candidates && data.candidates[0].content.parts[0].text) {
+
+            if (data.error) {
+                // debug: try to see what models ARE available
+                console.warn("Model not found. Listing available models for this key...");
+                const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${CONFIG.GEMINI_API_KEY}`;
+                const listResp = await fetch(listUrl);
+                const listData = await listResp.json();
+                console.log("Available Models:", listData);
+
+                throw new Error(`${data.error.status}: ${data.error.message}`);
+            }
+
+            if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
             }
-            throw new Error('Invalid response from API');
+
+            if (data.candidates && data.candidates[0].finishReason === "SAFETY") {
+                throw new Error("Response blocked by safety filters.");
+            }
+
+            console.log("Full API Response:", data);
+            throw new Error('Unexpected response format from AI');
         } catch (error) {
             console.error('Gemini API Error:', error);
-            return "I'm having trouble connecting to my brain right now. 🧠 Please try again later or check the dashboard for info!";
+            return `I'm having trouble connecting to my brain right now. 🧠 (Debug info: ${error.message}). Please check the Browser Console (F12) for a list of available models!`;
         }
     };
 
