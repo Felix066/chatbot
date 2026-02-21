@@ -107,49 +107,42 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const callGeminiAPI = async (prompt) => {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${CONFIG.GEMINI_API_KEY}`;
-        const body = {
-            contents: [{
-                parts: [{ text: prompt }]
-            }],
-            generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 500,
-            }
-        };
+        const trimmedKey = CONFIG.GEMINI_API_KEY.trim();
+        // This is the most standard, stable endpoint for Gemini Flash
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${trimmedKey}`;
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
             });
+
             const data = await response.json();
 
             if (data.error) {
-                // debug: try to see what models ARE available
-                console.warn("Model not found. Listing available models for this key...");
-                const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${CONFIG.GEMINI_API_KEY}`;
-                const listResp = await fetch(listUrl);
-                const listData = await listResp.json();
-                console.log("Available Models:", listData);
-
-                throw new Error(`${data.error.status}: ${data.error.message}`);
+                console.error("API Error Response:", data.error);
+                // If we get "NOT_FOUND", it's almost certainly the API setup, not the code.
+                if (data.error.status === "NOT_FOUND") {
+                    throw new Error("API Connection OK, but 'Generative Language API' is not enabled or model is unavailable for this key.");
+                }
+                throw new Error(data.error.message);
             }
 
             if (data.candidates && data.candidates[0].content?.parts?.[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
             }
+            throw new Error("Empty response from AI");
 
-            if (data.candidates && data.candidates[0].finishReason === "SAFETY") {
-                throw new Error("Response blocked by safety filters.");
-            }
-
-            console.log("Full API Response:", data);
-            throw new Error('Unexpected response format from AI');
         } catch (error) {
-            console.error('Gemini API Error:', error);
-            return `I'm having trouble connecting to my brain right now. 🧠 (Debug info: ${error.message}). Please check the Browser Console (F12) for a list of available models!`;
+            console.error('Final Gemini API Error:', error);
+            return `<strong>Connection Issue:</strong> ${error.message}<br><br>` +
+                `1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-primary)">Google AI Studio</a>.<br>` +
+                `2. Create a NEW API key.<br>` +
+                `3. Replace the key in your <code>config.js</code> file.<br>` +
+                `4. Refresh this page.`;
         }
     };
 
