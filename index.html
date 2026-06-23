@@ -15,40 +15,69 @@
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="logo-area">
-                <h1>ENGG.ADMIT</h1>
+                <h1 style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary);"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    ENGG.ADMIT
+                </h1>
             </div>
-            <nav style="margin-top: 3rem; flex: 1;">
+            <nav style="margin-top: 2.5rem; flex: 1; display: flex; flex-direction: column;">
                 <div class="nav-group">
-                    <p
-                        style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+                    <p style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; padding-left: 1rem;">
                         Navigation</p>
                     <ul class="nav-links">
-                        <li><a href="#" id="nav-chat" class="nav-link active">Chat Assistant</a></li>
-                        <li><a href="#" id="nav-courses" class="nav-link">Available Courses</a></li>
-                        <li><a href="#" id="nav-scholarships" class="nav-link">Scholarships</a></li>
-                        <li><a href="#" id="nav-journey" class="nav-link">Admission & Training</a></li>
-                        <li><a href="#" id="nav-docs" class="nav-link">Required Documents</a></li>
+                        <li><a href="#" id="nav-chat" class="nav-link active">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            Chat Assistant
+                        </a></li>
+                        <li><a href="#" id="nav-courses" class="nav-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            Available Courses
+                        </a></li>
+                        <li><a href="#" id="nav-scholarships" class="nav-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                            Scholarships
+                        </a></li>
+                        <li><a href="#" id="nav-journey" class="nav-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            Admission & Training
+                        </a></li>
+                        <li><a href="#" id="nav-docs" class="nav-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Required Documents
+                        </a></li>
                     </ul>
-                    <div class="nav-group" style="margin-top: 2rem;">
-                        <p
-                            style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-                            Demo Scenarios</p>
-                    </div>
+                </div>
+                
+                <div class="nav-group" style="margin-top: 2.5rem;">
+                    <p style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; padding-left: 1rem;">
+                        Demo Scenarios</p>
+                    <ul class="scenario-list">
+                        <li onclick="document.getElementById('user-input').value='Tell me about B.Tech'; handleSend()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="scenario-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>"Tell me about B.Tech"</span>
+                        </li>
+                        <li onclick="document.getElementById('user-input').value='What about Placements?'; handleSend()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="scenario-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>"What about Placements?"</span>
+                        </li>
+                        <li onclick="document.getElementById('user-input').value='Is there any Ragging?'; handleSend()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="scenario-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>"Is there any Ragging?"</span>
+                        </li>
+                        <li onclick="document.getElementById('user-input').value='Tell me the Fees'; handleSend()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="scenario-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>"Tell me the Fees"</span>
+                        </li>
+                    </ul>
+                </div>
             </nav>
 
-            <div class="sidebar-section">
-                <h3>Demo Scenarios</h3>
-                <ul class="scenario-list">
-                    <li onclick="userInput.value='Tell me about B.Tech'; handleSend()">"Tell me about B.Tech"</li>
-                    <li onclick="userInput.value='What about Placements?'; handleSend()">"What about Placements?"</li>
-                    <li onclick="userInput.value='Is there any Ragging?'; handleSend()">"Is there any Ragging?"</li>
-                    <li onclick="userInput.value='Tell me the Fees'; handleSend()">"Tell me the Fees"</li>
-                </ul>
-            </div>
-
             <div class="sidebar-footer">
-                <button class="helpdesk-btn" onclick="assistant.showDetails('support')">Contact Helpdesk</button>
-                <div class="system-tag">2026 Admissions Phase</div>
+                <button class="helpdesk-btn" onclick="assistant.showDetails('support')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    Contact Helpdesk
+                </button>
+                <div class="system-tag">Admissions Phase</div>
             </div>
         </aside>
 

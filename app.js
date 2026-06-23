@@ -162,7 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const appendMessage = (text, type, chips = []) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${type}`;
-        msgDiv.innerHTML = `${text}<span class="timestamp">${getTimestamp()}</span>`;
+        
+        // Simple markdown bold parser
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        msgDiv.innerHTML = `${formattedText}<span class="timestamp">${getTimestamp()}</span>`;
         if (chatWindow) chatWindow.appendChild(msgDiv);
 
         if (chips.length > 0) {
